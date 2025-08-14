@@ -1,0 +1,185 @@
+# Next.js アプリケーション プロジェクトルール
+
+## プロジェクト概要
+- **フレームワーク**: Next.js 15.4.6 (App Router)
+- **言語**: TypeScript
+- **スタイリング**: Tailwind CSS v4
+- **リンター**: ESLint
+- **バックエンド**: Laravel
+
+## バックエンド技術
+以下のディレクトリにバックエンドAPIを作成しています。
+こちらのディレクトリに修正を加えることは禁止します。
+フロントエンドを実装する際、こちらのAPIを使用してください。
+/Users/ユーザー名/Documents/04_PHP/Laravel_API
+
+## 🔗 バックエンドAPI連携時の対応
+
+### Laravel API実装の品質チェック
+フロントエンド実装時にLaravel APIと連携する場合、以下の点を確認し、非標準的な実装があれば修正を促してください：
+
+#### 1. レスポンス形式の標準性
+- **推奨**: `{"data": [item1, item2, ...]}`
+- **非推奨**: `{"data": [{"data": item1}, {"data": item2}, ...]}` (二重ネスト)
+- **対応**: 非標準的な形式を発見した場合、Laravel側の修正を優先的に提案
+
+#### 2. 一貫性の確認
+- GET/POST/PUT/DELETE間でレスポンス形式が統一されているか
+- エラーレスポンスの形式が統一されているか
+- ステータスコードが適切に使用されているか
+
+#### 3. 修正提案の優先順位
+1. **Laravel側の修正**: 根本的な解決策として最優先
+2. **フロントエンド側の対応**: 一時的な対応として実装
+3. **両方の実装**: 互換性を保ちながら段階的改善
+
+#### 4. 提案時の説明
+- なぜその実装が非標準的なのか
+- 標準的な実装との違い
+- 修正によるメリット（保守性、開発効率、一貫性）
+- 具体的な修正方法の提示
+## ファイル構造ルール
+
+### ディレクトリ構造
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API Routes
+│   ├── (routes)/          # ページルート
+│   └── layout.tsx         # ルートレイアウト
+├── components/            # 再利用可能なコンポーネント
+│   ├── ui/               # 基本UIコンポーネント
+│   └── features/         # 機能別コンポーネント
+├── types/                # TypeScript型定義
+├── lib/                  # ユーティリティ関数
+├── hooks/                # カスタムフック
+└── styles/               # グローバルスタイル
+```
+
+
+
+
+### ファイル命名規則
+- **コンポーネント**: PascalCase (例: `UserProfile.tsx`)
+- **ページ**: kebab-case (例: `user-profile/page.tsx`)
+- **API Routes**: kebab-case (例: `user-data/route.ts`)
+- **ユーティリティ**: camelCase (例: `formatDate.ts`)
+- **型定義**: PascalCase (例: `UserTypes.ts`)
+
+## コーディング規約
+
+### TypeScript
+- 厳密な型チェックを有効にする
+- `any`型の使用を避ける
+- インターフェースとタイプエイリアスを適切に使い分ける
+- ジェネリクスを活用する
+
+### React/Next.js
+- 関数コンポーネントを使用する
+- Hooksを適切に使用する
+- Server ComponentsとClient Componentsを適切に使い分ける
+- `'use client'`ディレクティブを必要な場合のみ使用
+
+### コンポーネント設計
+- 単一責任の原則に従う
+- Propsの型定義を必ず行う
+- デフォルトPropsを適切に設定する
+- コンポーネントの再利用性を考慮する
+
+### スタイリング
+- Tailwind CSSクラスを優先使用
+- カスタムCSSは最小限に抑える
+- レスポンシブデザインを考慮する
+- アクセシビリティを重視する
+
+## 開発ルール
+
+### コミットメッセージ
+- 日本語で記述
+- プレフィックスを使用: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
+- 例: `feat: ユーザープロフィール機能を追加`
+
+### コードレビュー
+- プルリクエストは必須
+- 最低1名のレビューアー承認が必要
+- 自動テストの通過を確認
+
+### テスト
+- 重要な機能にはテストを書く
+- Jest + React Testing Libraryを使用
+- E2EテストはPlaywrightを検討
+
+### パフォーマンス
+- 画像最適化（next/image使用）
+- コード分割を適切に行う
+- 不要な再レンダリングを避ける
+- バンドルサイズを監視する
+
+### 画面デザイン
+- 以下のApple Design Guidelineを参考にしてください。
+https://developer.apple.com/design/human-interface-guidelines/ios/overview/themes/
+- tailwindcssのデザインを参考にしてください。
+- デザインはモバイルファーストです。
+- デザインはシンプルでわかりやすいものにしてください。
+- デザインはモバイルファーストです。
+
+## セキュリティ
+
+### 認証・認可
+- NextAuth.jsまたは類似ライブラリを使用
+- 環境変数で機密情報を管理
+- API Routesでの認証チェックを徹底
+
+### データ処理
+- 入力値のバリデーションを必ず行う
+- SQLインジェクション対策
+- XSS対策を実装
+
+## デプロイメント
+
+### 環境
+- 開発環境: `npm run dev`
+- 本番環境: Vercel推奨
+- 環境変数の適切な管理
+
+### ビルド
+- `npm run build`でビルドエラーがないことを確認
+- `npm run lint`でコード品質をチェック
+
+## ドキュメント
+
+### 必須ドキュメント
+- README.md（プロジェクト概要、セットアップ手順）
+- API仕様書
+- コンポーネント仕様書
+
+### コメント
+- 複雑なロジックにはコメントを記述
+- JSDoc形式で関数の説明を記述
+- TODOコメントは期限を明記
+
+## トラブルシューティング
+
+### よくある問題
+- TypeScriptエラー: `npm run build`で確認
+- スタイル問題: Tailwind CSSの設定確認
+- ルーティング問題: App Routerの構造確認
+
+### デバッグ
+- 開発者ツールを活用
+- Next.jsのデバッグモードを使用
+- ログ出力を適切に行う
+
+## 追加設定
+
+### 推奨拡張機能
+- TypeScript Importer
+- Tailwind CSS IntelliSense
+- ESLint
+- Prettier
+
+### 設定ファイル
+- `.eslintrc.json`: ESLint設定
+- `tailwind.config.js`: Tailwind CSS設定
+- `tsconfig.json`: TypeScript設定
+- `next.config.js`: Next.js設定
