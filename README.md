@@ -1,150 +1,160 @@
-# Next.js アプリケーション
+# Next.js Todo アプリケーション
 
-このプロジェクトは、Next.js 15.4.6を使用した最新のWebアプリケーションです。
+Next.js 15.4.6を使用したTodo管理アプリケーションです。Laravel APIと連携してデータを管理します。
 
-## 🚀 技術スタック
+## 技術スタック
 
-- **フレームワーク**: Next.js 15.4.6
+- **フロントエンド**: Next.js 15.4.6 (App Router)
 - **言語**: TypeScript
-- **スタイリング**: Tailwind CSS 4.0
-- **フォント**: Geist (Google Fonts)
-- **コード品質**: ESLint
-- **ルーティング**: App Router
+- **スタイリング**: Tailwind CSS v4
+- **バックエンド**: Laravel API
+- **リンター**: ESLint
 
-## 📁 プロジェクト構造
+## プロジェクト構造
 
 ```
-next-js-app/
-├── src/
-│   └── app/
-│       ├── layout.tsx      # ルートレイアウト
-│       ├── page.tsx        # ホームページ
-│       ├── globals.css     # グローバルスタイル
-│       └── favicon.ico     # ファビコン
-├── public/                 # 静的ファイル
-├── node_modules/          # 依存関係
-├── package.json           # プロジェクト設定
-├── package-lock.json      # 依存関係ロック
-├── tsconfig.json          # TypeScript設定
-├── next.config.ts         # Next.js設定
-├── postcss.config.mjs     # PostCSS設定
-├── eslint.config.mjs      # ESLint設定
-├── next-env.d.ts          # Next.js型定義
-└── README.md              # このファイル
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API Routes (Laravel API プロキシ)
+│   ├── todo/              # Todoページ
+│   └── layout.tsx         # ルートレイアウト
+├── components/            # 再利用可能なコンポーネント
+│   ├── ui/               # 基本UIコンポーネント
+│   └── features/         # 機能別コンポーネント
+├── types/                # TypeScript型定義
+├── lib/                  # ユーティリティ関数
+└── hooks/                # カスタムフック
 ```
 
-## 🛠️ セットアップ
+## セットアップ
 
-### 前提条件
-- Node.js 18.17以上
-- npm または yarn
+### 1. 依存関係のインストール
 
-### インストール
 ```bash
-# 依存関係のインストール
 npm install
 ```
 
-## 🏃‍♂️ 開発
+### 2. 環境変数の設定
 
-### 開発サーバーの起動
+`.env.local`ファイルを作成し、Laravel APIのURLを設定してください：
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
+```
+
+### 3. Laravel APIの準備
+
+Laravel APIが以下のエンドポイントを提供していることを確認してください：
+
+- `GET /api/todos` - Todo一覧取得
+- `POST /api/todos` - Todo作成
+- `PUT /api/todos/{id}` - Todo更新
+- `DELETE /api/todos/{id}` - Todo削除
+
+### 4. 開発サーバーの起動
+
 ```bash
 npm run dev
 ```
 
-開発サーバーが起動したら、ブラウザで [http://localhost:3000](http://localhost:3000) にアクセスしてください。
+アプリケーションは `http://localhost:3000` で起動します。
 
-### 利用可能なスクリプト
+## 機能
+
+### Todo管理
+- ✅ Todoの追加
+- ✅ Todoの完了/未完了切り替え
+- ✅ Todoの削除
+- ✅ 統計情報の表示（総数、完了数、未完了数）
+
+### UI/UX
+- 📱 モバイルファーストデザイン
+- 🎨 モダンなUI（Tailwind CSS）
+- ⚡ リアルタイム更新
+- 🔄 ローディング状態の表示
+- ⚠️ エラーハンドリング
+
+## コンポーネント構成
+
+### UI コンポーネント（汎用的）
+- `LoadingSpinner` - ローディング表示
+- `ErrorMessage` - エラーメッセージ表示
+
+### 機能コンポーネント（Todo機能専用）
+- `TodoForm` - Todo追加フォーム
+- `TodoItem` - 個別のTodoアイテム
+- `TodoList` - Todoリスト表示
+- `TodoStats` - 統計情報表示
+- `TodoContainer` - Todo機能全体の統合
+
+### カスタムフック
+- `useTodos` - Todoデータの状態管理
+
+## API連携
+
+### Laravel APIとの通信
+Next.js API Routesを介してLaravel APIと通信します：
+
+- `/api/todos` - Todo一覧取得・作成
+- `/api/todos/[id]` - Todo更新・削除
+
+### エラーハンドリング
+- API通信エラーの適切な処理
+- ユーザーフレンドリーなエラーメッセージ
+- 再試行機能
+
+## 開発
+
+### コマンド
 
 ```bash
-npm run dev      # 開発サーバー起動 (http://localhost:3000)
-npm run build    # 本番用ビルド
-npm run start    # 本番サーバー起動
-npm run lint     # ESLintによるコード品質チェック
-```
+# 開発サーバー起動
+npm run dev
 
-## 📝 開発ガイド
-
-### ページの追加
-新しいページを作成するには、`src/app/` ディレクトリに新しいフォルダと `page.tsx` ファイルを作成します。
-
-例：
-```
-src/app/about/page.tsx  # /about ページ
-src/app/blog/page.tsx   # /blog ページ
-```
-
-### コンポーネントの作成
-再利用可能なコンポーネントは `src/components/` ディレクトリに配置することを推奨します。
-
-### スタイリング
-このプロジェクトでは Tailwind CSS を使用しています。クラス名を直接使用してスタイリングできます。
-
-```tsx
-<div className="bg-blue-500 text-white p-4 rounded-lg">
-  Hello World
-</div>
-```
-
-## 🔧 設定ファイル
-
-### TypeScript設定 (`tsconfig.json`)
-- 厳密な型チェック
-- パスエイリアス: `@/*` → `src/*`
-
-### Next.js設定 (`next.config.ts`)
-- 基本的なNext.js設定
-- 必要に応じてカスタマイズ可能
-
-### Tailwind CSS設定
-- 最新のTailwind CSS 4.0を使用
-- PostCSS設定済み
-
-## 🌐 デプロイ
-
-### Vercel（推奨）
-このプロジェクトはVercelに簡単にデプロイできます：
-
-1. [Vercel](https://vercel.com) にアカウントを作成
-2. GitHubリポジトリを接続
-3. 自動デプロイが開始されます
-
-### その他のプラットフォーム
-```bash
 # ビルド
 npm run build
 
 # 本番サーバー起動
 npm run start
+
+# リンター実行
+npm run lint
 ```
 
-## 📚 学習リソース
+### コード規約
+- TypeScriptの厳密な型チェック
+- ESLintによるコード品質管理
+- コンポーネントの単一責任原則
+- 適切なエラーハンドリング
 
-- [Next.js公式ドキュメント](https://nextjs.org/docs)
-- [Next.js学習チュートリアル](https://nextjs.org/learn)
-- [Tailwind CSS公式ドキュメント](https://tailwindcss.com/docs)
-- [TypeScript公式ドキュメント](https://www.typescriptlang.org/docs)
+## デプロイ
 
-## 🤝 コントリビューション
+### Vercel推奨
+1. GitHubリポジトリと連携
+2. 環境変数の設定
+3. 自動デプロイ
 
-1. このリポジトリをフォーク
-2. 機能ブランチを作成 (`git checkout -b feature/amazing-feature`)
-3. 変更をコミット (`git commit -m 'Add some amazing feature'`)
-4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
-5. プルリクエストを作成
+### 環境変数
+本番環境でも以下の環境変数を設定してください：
+- `NEXT_PUBLIC_API_URL` - Laravel APIの本番URL
 
-## 📄 ライセンス
+## トラブルシューティング
 
-このプロジェクトはMITライセンスの下で公開されています。
+### よくある問題
 
-## 🆘 サポート
+1. **API通信エラー**
+   - Laravel APIが起動しているか確認
+   - 環境変数の設定を確認
+   - CORS設定を確認
 
-問題が発生した場合や質問がある場合は、以下をご確認ください：
+2. **ビルドエラー**
+   - TypeScriptエラーの確認
+   - 依存関係の確認
 
-1. [Next.js GitHub Issues](https://github.com/vercel/next.js/issues)
-2. [Next.js Discord](https://discord.gg/nextjs)
-3. [Stack Overflow](https://stackoverflow.com/questions/tagged/next.js)
+3. **スタイル問題**
+   - Tailwind CSSの設定確認
+   - クラス名の確認
 
----
+## ライセンス
 
-**Happy Coding! 🎉**
+MIT License
