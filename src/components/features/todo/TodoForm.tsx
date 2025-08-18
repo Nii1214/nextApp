@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { TodoFormData } from '@/types/todo';
+import { Plus, Loader2 } from 'lucide-react';
 
 interface TodoFormProps {
     onSubmit: (data: TodoFormData) => Promise<void>;
@@ -37,23 +38,35 @@ export default function TodoForm({ onSubmit, disabled = false }: TodoFormProps) 
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
-            <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="新しいタスクを入力..."
-                disabled={disabled || isSubmitting}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-            <button
-                type="submit"
-                disabled={inputValue.trim() === '' || isSubmitting || disabled}
-                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
-            >
-                {isSubmitting ? '追加中...' : '追加'}
-            </button>
-        </form>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
+            <form onSubmit={handleSubmit} className="flex gap-2">
+                <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="新しいタスクを入力..."
+                    disabled={disabled || isSubmitting}
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 disabled:cursor-not-allowed text-gray-900 placeholder-gray-400 text-sm"
+                />
+                <button
+                    type="submit"
+                    disabled={inputValue.trim() === '' || isSubmitting || disabled}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium flex items-center gap-1 text-sm"
+                >
+                    {isSubmitting ? (
+                        <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span>追加中</span>
+                        </>
+                    ) : (
+                        <>
+                            <Plus className="w-4 h-4" />
+                            <span>追加</span>
+                        </>
+                    )}
+                </button>
+            </form>
+        </div>
     );
 }

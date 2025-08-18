@@ -2,30 +2,27 @@
 
 import { Todo } from '@/types/todo';
 import TodoItem from './TodoItem';
+import TodoEmptyState from './TodoEmptyState';
+import { TodoTabType } from './TodoTabs';
 
 interface TodoListProps {
     todos: Todo[];
     onToggle: (id: number) => Promise<void>;
     onDelete: (id: number) => Promise<void>;
     disabled?: boolean;
+    activeTab?: TodoTabType;
 }
 
-export default function TodoList({ todos, onToggle, onDelete, disabled = false }: TodoListProps) {
+export default function TodoList({ todos, onToggle, onDelete, disabled = false, activeTab = 'all' }: TodoListProps) {
     if (todos.length === 0) {
-        return (
-            <div className="text-center text-gray-500 py-8">
-                <div className="text-4xl mb-2">📋</div>
-                <p>タスクがありません</p>
-                <p className="text-sm">新しいタスクを追加してください</p>
-            </div>
-        );
+        return <TodoEmptyState activeTab={activeTab} />;
     }
 
     return (
         <div className="space-y-3">
-            {todos.map((todo) => (
+            {todos.map((todo, index) => (
                 <TodoItem
-                    key={todo.id}
+                    key={todo.id || index}
                     todo={todo}
                     onToggle={onToggle}
                     onDelete={onDelete}

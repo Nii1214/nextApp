@@ -4,18 +4,24 @@ import { useTodos } from '@/hooks/useTodos';
 import TodoForm from '@/components/features/todo/TodoForm';
 import TodoList from '@/components/features/todo/TodoList';
 import TodoStats from '@/components/features/todo/TodoStats';
+import TodoTabs from '@/components/features/todo/TodoTabs';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 
 export default function TodoContainer() {
     const {
         todos,
+        allTodos,
         loading,
+        creating,
         error,
         addTodo,
         toggleTodo,
         deleteTodo,
         refetch,
+        activeTab,
+        setActiveTab,
+        stats
     } = useTodos();
 
     const handleAddTodo = async (data: { text: string }) => {
@@ -27,11 +33,7 @@ export default function TodoContainer() {
     }
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-6">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-                📝 ToDo リスト
-            </h1>
-
+        <div className="space-y-6">
             {error && (
                 <ErrorMessage
                     message={error}
@@ -41,7 +43,13 @@ export default function TodoContainer() {
 
             <TodoForm
                 onSubmit={handleAddTodo}
-                disabled={loading}
+                disabled={loading || creating}
+            />
+
+            <TodoTabs
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+                stats={stats}
             />
 
             <TodoList
@@ -49,9 +57,10 @@ export default function TodoContainer() {
                 onToggle={toggleTodo}
                 onDelete={deleteTodo}
                 disabled={loading}
+                activeTab={activeTab}
             />
 
-            <TodoStats todos={todos} />
+            <TodoStats todos={allTodos} />
         </div>
     );
 }
