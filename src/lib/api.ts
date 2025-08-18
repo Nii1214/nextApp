@@ -1,4 +1,4 @@
-import { Todo, TodoFormData } from '@/types/todo';
+import { Todo, TodoFormData, LaravelTodo, LaravelTodoResponse, LaravelTodoListResponse } from '@/types/todo';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
@@ -50,7 +50,7 @@ class ApiClient {
 
     // Todo関連のAPI
     async getTodos(): Promise<Todo[]> {
-        const response = await this.request<{ data: any[] }>('/todos');
+        const response = await this.request<LaravelTodoListResponse>('/todos');
         // Laravel APIの統一された形式に対応
         return response.data.map(item => ({
             id: item.id,
@@ -66,7 +66,7 @@ class ApiClient {
             description: data.text // descriptionも同じ値で設定
         };
 
-        const response = await this.request<{ data: any }>('/todos', {
+        const response = await this.request<LaravelTodoResponse>('/todos', {
             method: 'POST',
             body: JSON.stringify(requestData),
         });
@@ -83,7 +83,11 @@ class ApiClient {
 
     async updateTodo(id: number, data: Partial<Todo>): Promise<Todo> {
         // Laravel APIの形式に合わせてデータを変換
-        const requestData: any = {
+        const requestData: {
+            completed?: boolean;
+            title?: string;
+            description?: string;
+        } = {
             completed: data.completed
         };
 
@@ -93,7 +97,7 @@ class ApiClient {
             requestData.description = data.text;
         }
 
-        const response = await this.request<{ data: any }>(`/todos/${id}`, {
+        const response = await this.request<LaravelTodoResponse>(`/todos/${id}`, {
             method: 'PUT',
             body: JSON.stringify(requestData),
         });
@@ -109,7 +113,7 @@ class ApiClient {
     }
 
     async deleteTodo(id: number): Promise<void> {
-        await this.request<{ data: any }>(`/todos/${id}`, {
+        await this.request<void>(`/todos/${id}`, {
             method: 'DELETE',
         });
     }

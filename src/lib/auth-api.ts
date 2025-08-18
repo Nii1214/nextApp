@@ -67,5 +67,5 @@ export async function logoutUser(token: string): Promise<void> {
 
 // 現在のユーザー情報取得
 export async function getCurrentUser(token: string) {
-    return authenticatedRequest<{ data: { user: any } }>('/auth/user', token);
+    return authenticatedRequest<{ data: { user: { id: number; name: string; email: string; created_at?: string; updated_at?: string } } }>('/auth/user', token);
 }
