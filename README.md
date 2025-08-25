@@ -39,7 +39,7 @@ npm install
 `.env.local`ファイルを作成し、Laravel APIのURLを設定してください：
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8000/api
+NEXT_PUBLIC_API_URL=https://your-api-domain.com/api
 ```
 
 ### 3. Laravel APIの準備

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Todo, TodoFormData } from '@/types/todo';
-import { apiClient } from '@/lib/api';
+import { apiClient } from '@/lib/todo-api';
 import { TodoTabType } from '@/components/features/todo/TodoTabs';
 import { useAuth } from '@/contexts/AuthContext';
 
