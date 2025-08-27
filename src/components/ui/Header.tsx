@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, CheckSquare, Menu, LogOut, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import Icon from '@/components/ui/Icon';
+import { faLaptopCode } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header() {
     const pathname = usePathname();
@@ -15,15 +17,13 @@ export default function Header() {
 
     return (
         <header className="bg-white shadow-sm border-b border-gray-200">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-12">
+            <div className="mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center h-12">
                     {/* ロゴ・ブランド */}
-                    <div className="flex items-center">
+                    <div className="flex items-center ">
                         <Link href="/" className="flex items-center space-x-2">
-                            <div className="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center">
-                                <span className="text-white font-bold text-sm">N</span>
-                            </div>
-                            <span className="text-lg font-bold text-gray-900">NextApp</span>
+                            <Icon icon={faLaptopCode} className="w-6 h-6 text-blue-500" />
+                            <span className="text-lg font-bold text-gray-900">デブリオ</span>
                         </Link>
                     </div>
 
@@ -54,7 +54,7 @@ export default function Header() {
                     </nav>
 
                     {/* ユーザーメニュー */}
-                    <div className="hidden md:flex items-center space-x-4">
+                    <div className="hidden md:flex items-center space-x-4 justify-end">
                         {isAuthenticated ? (
                             <div className="flex items-center space-x-3">
                                 <div className="flex items-center space-x-2 text-sm text-gray-700">
@@ -70,7 +70,7 @@ export default function Header() {
                                 </button>
                             </div>
                         ) : (
-                            <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-3 justify-center">
                                 <Link
                                     href="/login"
                                     className="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"

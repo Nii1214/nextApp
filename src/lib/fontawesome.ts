@@ -22,7 +22,7 @@ import {
 import {
     faUser as faUserRegular,
     faEdit as faEditRegular,
-    faTrash as faTrashRegular
+    faTrashCan as faTrashCanRegular
 } from '@fortawesome/free-regular-svg-icons';
 
 // アイコンライブラリにアイコンを追加
@@ -32,5 +32,5 @@ library.add(
     faEye, faEyeSlash, faCog, faSignOutAlt, faHome, faList,
     faChartBar, faUsers, faUserShield, faUserCheck, faUserTimes,
     // Regular icons
-    faUserRegular, faEditRegular, faTrashRegular
+    faUserRegular, faEditRegular, faTrashCanRegular
 );
