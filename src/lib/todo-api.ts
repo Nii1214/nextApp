@@ -1,56 +1,17 @@
-import { Todo, TodoFormData, LaravelTodo, LaravelTodoResponse, LaravelTodoListResponse } from '@/types/todo';
+import { Todo, TodoFormData, LaravelTodoResponse, LaravelTodoListResponse } from '@/types/todo';
+import { ApiClient } from './api-client';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-
-class ApiClient {
-    private getAuthToken(): string | null {
-        if (typeof window !== 'undefined') {
-            return localStorage.getItem('auth_token');
-        }
-        return null;
-    }
-
-    private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-        const url = `${API_BASE_URL}${endpoint}`;
-        const token = this.getAuthToken();
-
-        const config: RequestInit = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...(token && { 'Authorization': `Bearer ${token}` }),
-                ...options.headers,
-            },
-            ...options,
-        };
-
-        try {
-            const response = await fetch(url, config);
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-
-                // 認証エラーの特別処理
-                if (response.status === 401) {
-                    localStorage.removeItem('auth_token');
-                    // ページをリロードして認証状態をリセット
-                    if (typeof window !== 'undefined') {
-                        window.location.href = '/login';
-                    }
-                }
-
-                throw new Error(errorData.message || `API Error: ${response.status} ${response.statusText}`);
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error('API request failed:', error);
-            throw error;
-        }
-    }
-
-    // Todo関連のAPI
+/**
+ * Todo関連のAPI処理を提供するクラス
+ * 共通APIクライアントを継承して認証処理を利用
+ */
+class TodoApiClient extends ApiClient {
+    /**
+     * Todo一覧を取得
+     * @returns Todo配列
+     */
     async getTodos(): Promise<Todo[]> {
-        const response = await this.request<LaravelTodoListResponse>('/todos');
+        const response = await this.get<LaravelTodoListResponse>('/todos');
         // Laravel APIの統一された形式に対応
         return response.data.map(item => ({
             id: item.id,
@@ -59,6 +20,11 @@ class ApiClient {
         }));
     }
 
+    /**
+     * 新しいTodoを作成
+     * @param data Todo作成データ
+     * @returns 作成されたTodo
+     */
     async createTodo(data: TodoFormData): Promise<Todo> {
         // Laravel APIの形式に合わせてデータを変換
         const requestData = {
@@ -66,10 +32,7 @@ class ApiClient {
             description: data.text // descriptionも同じ値で設定
         };
 
-        const response = await this.request<LaravelTodoResponse>('/todos', {
-            method: 'POST',
-            body: JSON.stringify(requestData),
-        });
+        const response = await this.post<LaravelTodoResponse>('/todos', requestData);
 
         // Laravel APIの統一された形式に対応
         const todoData = response.data;
@@ -81,6 +44,12 @@ class ApiClient {
         };
     }
 
+    /**
+     * Todoを更新
+     * @param id TodoのID
+     * @param data 更新データ
+     * @returns 更新されたTodo
+     */
     async updateTodo(id: number, data: Partial<Todo>): Promise<Todo> {
         // Laravel APIの形式に合わせてデータを変換
         const requestData: {
@@ -97,10 +66,7 @@ class ApiClient {
             requestData.description = data.text;
         }
 
-        const response = await this.request<LaravelTodoResponse>(`/todos/${id}`, {
-            method: 'PUT',
-            body: JSON.stringify(requestData),
-        });
+        const response = await this.put<LaravelTodoResponse>(`/todos/${id}`, requestData);
 
         // Laravel APIの統一された形式に対応
         const todoData = response.data;
@@ -112,15 +78,23 @@ class ApiClient {
         };
     }
 
+    /**
+     * Todoを削除
+     * @param id TodoのID
+     */
     async deleteTodo(id: number): Promise<void> {
-        await this.request<void>(`/todos/${id}`, {
-            method: 'DELETE',
-        });
+        await this.delete<void>(`/todos/${id}`);
     }
 
+    /**
+     * Todoの完了状態を切り替え
+     * @param id TodoのID
+     * @param completed 完了状態
+     * @returns 更新されたTodo
+     */
     async toggleTodo(id: number, completed: boolean): Promise<Todo> {
         return this.updateTodo(id, { completed });
     }
 }
 
-export const apiClient = new ApiClient();
+export const todoApiClient = new TodoApiClient();

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Todo, TodoFormData } from '@/types/todo';
-import { apiClient } from '@/lib/todo-api';
+import { todoApiClient } from '@/lib/todo-api';
 import { TodoTabType } from '@/components/features/todo/TodoTabs';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -17,7 +17,7 @@ export const useTodos = () => {
         try {
             setLoading(true);
             setError(null);
-            const data = await apiClient.getTodos();
+            const data = await todoApiClient.getTodos();
             setTodos(data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Todoの取得に失敗しました');
@@ -31,7 +31,7 @@ export const useTodos = () => {
         try {
             setError(null);
             setCreating(true);
-            const newTodo = await apiClient.createTodo(formData);
+            const newTodo = await todoApiClient.createTodo(formData);
             setTodos(prev => [newTodo, ...prev]); // 先頭に追加
             return newTodo;
         } catch (err) {
@@ -49,7 +49,7 @@ export const useTodos = () => {
             const todo = todos.find(t => t.id === id);
             if (!todo) return;
 
-            const updatedTodo = await apiClient.toggleTodo(id, !todo.completed);
+            const updatedTodo = await todoApiClient.toggleTodo(id, !todo.completed);
             setTodos(prev =>
                 prev.map(t => t.id === id ? updatedTodo : t)
             );
@@ -62,7 +62,7 @@ export const useTodos = () => {
     const deleteTodo = useCallback(async (id: number) => {
         try {
             setError(null);
-            await apiClient.deleteTodo(id);
+            await todoApiClient.deleteTodo(id);
             setTodos(prev => prev.filter(t => t.id !== id));
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Todoの削除に失敗しました');

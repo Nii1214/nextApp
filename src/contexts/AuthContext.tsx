@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, LoginCredentials, RegisterCredentials, AuthContextType } from '@/types/auth';
-import { loginUser, registerUser, logoutUser, getCurrentUser } from '@/lib/auth-api';
+import { authApiClient } from '@/lib/auth-api';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // トークンの有効性をチェック
     const validateToken = async (authToken: string) => {
         try {
-            const response = await getCurrentUser(authToken);
+            const response = await authApiClient.getCurrentUser();
             setUser(response.data.user);
         } catch (error) {
             // トークンが無効な場合、ローカルストレージをクリア
@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // ログイン処理
     const login = async (credentials: LoginCredentials) => {
         try {
-            const response = await loginUser(credentials);
+            const response = await authApiClient.loginUser(credentials);
             const { user: userData, token: authToken } = response.data;
 
             setUser(userData);
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // ユーザー登録処理
     const register = async (credentials: RegisterCredentials) => {
         try {
-            const response = await registerUser(credentials);
+            const response = await authApiClient.registerUser(credentials);
             const { user: userData, token: authToken } = response.data;
 
             setUser(userData);
@@ -71,7 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const logout = async () => {
         try {
             if (token) {
-                await logoutUser(token);
+                await authApiClient.logoutUser();
             }
         } catch (error) {
             console.error('Logout error:', error);
