@@ -52,6 +52,7 @@ export default function LoginForm() {
                     type="email"
                     id="email"
                     name="email"
+                    autoComplete="username"
                     value={credentials.email}
                     onChange={handleChange}
                     required
@@ -68,6 +69,7 @@ export default function LoginForm() {
                     type="password"
                     id="password"
                     name="password"
+                    autoComplete="current-password"
                     value={credentials.password}
                     onChange={handleChange}
                     required
