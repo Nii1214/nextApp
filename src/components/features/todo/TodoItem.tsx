@@ -25,7 +25,7 @@ export default function TodoItem({ todo, onToggle, onDelete, disabled = false }:
 
     return (
         <div
-            className={`flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm border border-gray-200 transition-all duration-200 hover:shadow-md ${todo.completed ? 'opacity-75' : ''
+            className={`flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-md min-h-[72px] ${todo.completed ? 'opacity-75' : ''
                 } ${disabled ? 'cursor-not-allowed' : ''}`}
         >
             <button
@@ -33,7 +33,7 @@ export default function TodoItem({ todo, onToggle, onDelete, disabled = false }:
                 disabled={disabled}
                 className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${todo.completed
                     ? 'bg-green-500 border-green-500 text-white shadow-sm'
-                    : 'border-gray-300 hover:border-green-400 hover:bg-green-50'
+                    : 'border-gray-300 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-900/20'
                     } ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
                 aria-label={todo.completed ? '完了を解除' : '完了にする'}
             >
@@ -41,9 +41,9 @@ export default function TodoItem({ todo, onToggle, onDelete, disabled = false }:
             </button>
 
             <span
-                className={`flex-1 text-sm leading-normal ${todo.completed
-                    ? 'line-through text-gray-400'
-                    : 'text-gray-900'
+                className={`flex-1 text-sm leading-relaxed flex items-center min-h-[24px] ${todo.completed
+                    ? 'line-through text-gray-400 dark:text-gray-500'
+                    : 'text-gray-900 dark:text-gray-100'
                     }`}
             >
                 {todo.text}
@@ -52,7 +52,7 @@ export default function TodoItem({ todo, onToggle, onDelete, disabled = false }:
             <button
                 onClick={handleDelete}
                 disabled={disabled}
-                className={`p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 ${disabled ? 'cursor-not-allowed opacity-50' : ''
+                className={`p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 ${disabled ? 'cursor-not-allowed opacity-50' : ''
                     }`}
                 aria-label="削除"
             >

@@ -16,8 +16,8 @@ export default function TodoStats({ todos }: TodoStatsProps) {
     }
 
     return (
-        <div className="mt-6 pt-4 border-t border-gray-200">
-            <div className="flex justify-between text-sm text-gray-600">
+        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
                 <span>総タスク数: {total}</span>
                 <span>完了済み: {completed}</span>
                 <span>未完了: {pending}</span>
@@ -25,13 +25,13 @@ export default function TodoStats({ todos }: TodoStatsProps) {
 
             {/* プログレスバー */}
             <div className="mt-2">
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
-                        className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                        className="bg-green-500 dark:bg-green-600 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${total > 0 ? (completed / total) * 100 : 0}%` }}
                     />
                 </div>
-                <div className="text-xs text-gray-500 mt-1 text-center">
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
                     {total > 0 ? Math.round((completed / total) * 100) : 0}% 完了
                 </div>
             </div>

@@ -38,8 +38,8 @@ export default function TodoForm({ onSubmit, disabled = false }: TodoFormProps) 
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-            <form onSubmit={handleSubmit} className="flex gap-2">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <input
                     type="text"
                     value={inputValue}
@@ -47,12 +47,12 @@ export default function TodoForm({ onSubmit, disabled = false }: TodoFormProps) 
                     onKeyPress={handleKeyPress}
                     placeholder="新しいタスクを入力..."
                     disabled={disabled || isSubmitting}
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 disabled:cursor-not-allowed text-gray-900 placeholder-gray-400 text-sm"
+                    className="flex-1 px-3 py-3 sm:py-2 border border-gray-200 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 disabled:bg-gray-50 dark:disabled:bg-gray-700 disabled:cursor-not-allowed text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-sm sm:text-sm bg-white dark:bg-gray-700"
                 />
                 <button
                     type="submit"
                     disabled={inputValue.trim() === '' || isSubmitting || disabled}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium flex items-center gap-1 text-sm"
+                    className="px-4 py-3 sm:py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-all duration-200 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2 sm:gap-1 text-sm"
                 >
                     {isSubmitting ? (
                         <>

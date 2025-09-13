@@ -15,21 +15,21 @@ export default function TodoEmptyState({ activeTab }: TodoEmptyStateProps) {
                     icon: ListTodo,
                     title: '未完了のタスクがありません',
                     description: '全てのタスクが完了しています！お疲れ様でした。',
-                    iconColor: 'text-blue-500'
+                    iconColor: 'text-blue-500 dark:text-blue-400'
                 };
             case 'completed':
                 return {
                     icon: CheckCircle,
                     title: '完了済みのタスクがありません',
                     description: 'まだタスクを完了していません。頑張りましょう！',
-                    iconColor: 'text-green-500'
+                    iconColor: 'text-green-500 dark:text-green-400'
                 };
             default:
                 return {
                     icon: Layers,
                     title: 'タスクがありません',
                     description: '新しいタスクを追加して、生産性を向上させましょう！',
-                    iconColor: 'text-gray-500'
+                    iconColor: 'text-gray-500 dark:text-gray-400'
                 };
         }
     };
@@ -42,10 +42,10 @@ export default function TodoEmptyState({ activeTab }: TodoEmptyStateProps) {
             <div className={`mx-auto w-16 h-16 ${config.iconColor} mb-4`}>
                 <Icon className="w-full h-full" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                 {config.title}
             </h3>
-            <p className="text-sm text-gray-600 max-w-sm mx-auto">
+            <p className="text-sm text-gray-600 dark:text-gray-300 max-w-sm mx-auto">
                 {config.description}
             </p>
         </div>
